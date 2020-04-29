@@ -41,7 +41,9 @@ module.exports = appInfo => {
   };
 
   // add your middleware config here
-  config.middleware = [];
+  config.middleware = [
+    'param'
+  ];
 
   // add your user config here
   const userConfig = {
