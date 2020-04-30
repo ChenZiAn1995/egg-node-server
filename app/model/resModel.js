@@ -15,16 +15,16 @@ class BasicModel {
 }
 
 class SuccessModel extends BasicModel {
-  constructor(data, message = '操作成功') {
+  constructor(data, message = '操作成功', resCode) {
     super(data, message);
-    this.resCode = '0000';
+    this.resCode = resCode || '0000';
   }
 }
 
 class ErrorModel extends BasicModel {
-  constructor(data, message = '操作失败') {
+  constructor(data, message = '操作失败', resCode) {
     super(data, message);
-    this.resCode = '5000';
+    this.resCode = resCode || '5000';
   }
 }
 

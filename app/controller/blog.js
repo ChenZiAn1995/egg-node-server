@@ -1,4 +1,5 @@
 const { SuccessModel, ErrorModel } = require('../model/resModel');
+
 const Controller = require('egg').Controller;
 class BlogController extends Controller {
   async selective() {
@@ -25,6 +26,10 @@ class BlogController extends Controller {
     const data = await this.service.blog.getArticleDetail(id);
     this.ctx.body = data.length ? new SuccessModel(data) : new ErrorModel(data, '未找到该文章');
   }
+
+  // async updateArticleType() {
+  //
+  // }
 }
 
 module.exports = BlogController;
