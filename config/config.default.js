@@ -23,7 +23,7 @@ module.exports = appInfo => {
       // password
       password: '335544//mysql',
       // database
-      database: '_blog',
+      database: 'blog',
     },
     // load into app,default is open //加载到应用程序，默认为打开
     app: true,
@@ -36,7 +36,7 @@ module.exports = appInfo => {
 
   // JWT安全密钥
   config.jwt = {
-    secret: '6885_545', // 自定义 token 的加密条件字符串
+    secret: 'flsh#Nb', // 自定义 token 的加密条件字符串
   };
   config.security = {
     csrf: {

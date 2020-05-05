@@ -26,7 +26,21 @@ class BlogController extends Controller {
     const data = await this.service.blog.getArticleDetail(id);
     this.ctx.body = data.length ? new SuccessModel(data) : new ErrorModel(data, '未找到该文章');
   }
-
+  // 新增或更新文章
+  async addOrUpdateArt() {
+    const result = await this.service.blog.addOrUpdateArt(this.ctx.params, this.ctx.decode);
+    this.ctx.body = result ? new SuccessModel() : new ErrorModel();
+  }
+  // 修改文章状态
+  async changeArtStatus() {
+    const result = await this.service.blog.changeType(this.ctx.params, 'blog_article', 'art_status', 'art_id');
+    this.ctx.body = result ? new SuccessModel() : new ErrorModel();
+  }
+  // 修改分类状态
+  async changeCatStatus() {
+    const result = await this.service.blog.changeType(this.ctx.params, 'blog_category', 'cat_status', 'cat_id');
+    this.ctx.body = result ? new SuccessModel() : new ErrorModel();
+  }
   // async updateArticleType() {
   //
   // }

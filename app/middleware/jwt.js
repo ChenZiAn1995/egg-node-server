@@ -11,6 +11,7 @@ module.exports = options => {
       ctx.decode = ctx.app.jwt.verify(token, options.secret);
       await next();
     } catch (error) {
+      console.log('error:',error);
       ctx.body = new ErrorModel({}, '登录已过期,请重新登录', 1006);
       return;
     }
