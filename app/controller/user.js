@@ -23,13 +23,13 @@ class UserController extends Controller {
     } else if (validate === 1) {
       this.ctx.body = new ErrorModel('修改失败,请稍后再试');
     } else if (validate === 2) {
-      this.ctx.body = new SuccessModel({}, '修改成功,请重新登录', 1001);
+      this.ctx.body = new SuccessModel({}, '修改成功,请重新登录', 1002);
     }
   }
 
   // 退出并清除用户信息
   async logout() {
-    this.ctx.body = new SuccessModel({}, '退出成功');
+    this.ctx.body = new SuccessModel({}, '退出成功', 1002);
   }
 }
 
