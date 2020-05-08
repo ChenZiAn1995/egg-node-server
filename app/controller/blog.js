@@ -33,12 +33,12 @@ class BlogController extends Controller {
   }
   // 修改文章状态
   async changeArtStatus() {
-    const result = await this.service.blog.changeType(this.ctx.params, 'blog_article', 'art_status', 'art_id');
+    const result = await this.service.blog.changeType(this.ctx.params, 'article', 'art_status', 'art_id');
     this.ctx.body = result ? new SuccessModel() : new ErrorModel();
   }
   // 修改分类状态
   async changeCatStatus() {
-    const result = await this.service.blog.changeType(this.ctx.params, 'blog_category', 'cat_status', 'cat_id');
+    const result = await this.service.blog.changeType(this.ctx.params, 'category', 'cat_status', 'cat_id');
     this.ctx.body = result ? new SuccessModel() : new ErrorModel();
   }
   // async updateArticleType() {

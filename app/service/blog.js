@@ -10,8 +10,8 @@ class BlogService extends Service {
       listSql += `and article.author=${escape(postData.author)}`;
     }
     if (postData.keyword) {
-      countSql += `and article.art_title like ${escape(`%${postData.keyword}%`)} `;
-      listSql += `and article.art_title like ${escape(`%${postData.keyword}%`)} `;
+      countSql += `and article.art_title like '%${postData.keyword}%' `;
+      listSql += `and article.art_title like '%${postData.keyword}%' `;
     }
     if (postData.status) {
       listSql += ` and article.art_status = ${postData.status} `;
