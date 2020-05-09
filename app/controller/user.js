@@ -9,7 +9,7 @@ class UserController extends Controller {
         user_id: data[0].user_id,
         role_id: data[0].role_id,
       }, this.app.config.jwt.secret, { expiresIn: 3600 });
-      const roles = await this.service.role.getRole(data[0].role_id, 1);
+      const roles = await this.service.utils.getRole(data[0].role_id, 1);
       this.ctx.body = new SuccessModel({ token, user_name: data[0].user_name, role_name: data[0].role_name, roles });
     } else {
       this.ctx.body = new ErrorModel('登录失败,请检查用户名或密码是否错误');

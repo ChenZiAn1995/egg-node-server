@@ -1,6 +1,7 @@
 // eslint-disable-next-line strict
+const qiniu = require('qiniu');
 const Service = require('egg').Service;
-class RolesService extends Service {
+class UtilsService extends Service {
   // 构建树形结构数据
   buildTree(data) {
     const res = [];
@@ -31,6 +32,20 @@ class RolesService extends Service {
     const data = this.buildTree(permissions);
     return data;
   }
+
+  // 获取七牛云列表
+  async getQiniuToken() {
+
+    const accessKey = 'jTllAkjokWHTxIxsZ0zSWlFKL9hzmGzazAmP9YJR';
+    const secretKey = 'A0lYdzXS96IaqaPJwn1W2__HZRWSsNsCtGzOaICq';
+    const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
+    const options = {
+      scope: 'chenzian_blog',
+    };
+    const putPolicy = new qiniu.rs.PutPolicy(options);
+    const uploadToken = putPolicy.uploadToken(mac);
+    return uploadToken
+  }
 }
 
-module.exports = RolesService;
+module.exports = UtilsService;

@@ -16,5 +16,6 @@ module.exports = app => {
   router.post('/user/login', controller.user.login);// 登录接口
   router.post('/user/changePassword', jwt, controller.user.changePassword); // 修改密码接口
   router.post('/user/logout', jwt, controller.user.logout); // 退出并清除用户信息
-  router.post('/user/getUserInfo', jwt, controller.role.getUserInfo); // 根据token获取用户角色数据信息
+  router.post('/user/getUserInfo', jwt, controller.utils.getUserInfo); // 根据token获取用户角色数据信息
+  router.post('/utils/getQiniuToken', jwt, controller.utils.getQiniuToken); // 获取七牛云token上传图片
 };

@@ -4,29 +4,29 @@ class BlogService extends Service {
   // implement
   async getAllArticle(postData) {
     let countSql = `select count(*) as total from article where art_status ${postData.status ? `= ${postData.status}` : '<> 0'} `;
-    let listSql = 'select * from article LEFT JOIN category ON category.cat_id = article.cat_id  where  1=1 ';
-    if (postData.author) {
-      countSql += `and article.author=${escape(postData.author)}`;
-      listSql += `and article.author=${escape(postData.author)}`;
+    let listSql = 'select a.art_id,a.art_title,a.art_desc,a.art_cover,a.art_content,c.cat_id,a.tag_ids,a.create_time,a.update_time,a.art_status,a.author_id,a.art_visited,a.art_comment,a.art_likes,c.cat_name,c.cat_status  from article as a LEFT JOIN category as c ON c.cat_id = a.cat_id  where  1=1 ';
+    if (postData.art_id) {
+      countSql += `and article.art_id=${escape(postData.art_id)} `;
+      listSql += `and a.art_id=${escape(postData.art_id)} `;
     }
     if (postData.keyword) {
       countSql += `and article.art_title like '%${postData.keyword}%' `;
-      listSql += `and article.art_title like '%${postData.keyword}%' `;
+      listSql += `and a.art_title like '%${postData.keyword}%' `;
     }
     if (postData.status) {
-      listSql += ` and article.art_status = ${postData.status} `;
+      listSql += ` and a.art_status = ${postData.status} `;
     } else {
-      listSql += 'and article.art_status <> 0 ';
+      listSql += 'and a.art_status <> 0 ';
     }
     if (postData.categoryId) {
       countSql += ` and article.cat_id = ${postData.categoryId} `;
-      listSql += ` and article.cat_id = ${postData.categoryId} `;
+      listSql += ` and a.cat_id = ${postData.categoryId} `;
     }
     if (postData.tagId) {
       countSql += ` and article.tag_ids like '%${postData.tagId}%' `;
-      listSql += ` and article.tag_ids like '%${postData.tagId}%' `;
+      listSql += ` and a.tag_ids like '%${postData.tagId}%' `;
     }
-    listSql += 'order by article.create_time desc ';
+    listSql += 'order by a.create_time desc ';
     listSql += `limit ${(postData.page - 1) * postData.pageSize},${postData.pageSize}; `;
     // console.log(listSql)
     const blogData = await this.app.mysql.query(listSql);
