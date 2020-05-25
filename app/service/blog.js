@@ -3,30 +3,30 @@ const Service = require('egg').Service;
 class BlogService extends Service {
   // implement
   async getAllArticle(postData) {
-    let countSql = `select count(*) as total from article where art_status ${postData.status ? `= ${postData.status}` : '<> 0'} `;
-    let listSql = 'select a.art_id,a.art_title,a.art_desc,a.art_cover,a.art_content,c.cat_id,a.tag_ids,a.create_time,a.update_time,a.art_status,a.author_id,a.art_visited,a.art_comment,a.art_likes,c.cat_name,c.cat_status  from article as a LEFT JOIN category as c ON c.cat_id = a.cat_id  where  1=1 ';
-    if (postData.art_id) {
-      countSql += `and article.art_id=${escape(postData.art_id)} `;
-      listSql += `and a.art_id=${escape(postData.art_id)} `;
+    let countSql = `select count(*) as total from article where artStatus ${postData.status >= 0 && postData.status !== '' ? `= ${postData.status}` : '<> 0'} `;
+    let listSql = 'select a.id as artId,a.artTitle,a.artDesc,a.artCover,a.artContent,a.catId,a.tagIds,a.createTime,a.updateTime,a.artStatus,a.authorId,a.artVisited,a.artComment,a.artLikes,c.catName,c.catStatus  from article as a LEFT JOIN category as c ON c.id = a.catId  where  1=1 ';
+    if (postData.artId) {
+      countSql += `and article.id=${escape(postData.artId)} `;
+      listSql += `and a.id=${escape(postData.artId)} `;
     }
     if (postData.keyword) {
-      countSql += `and article.art_title like '%${postData.keyword}%' `;
-      listSql += `and a.art_title like '%${postData.keyword}%' `;
+      countSql += `and article.artTitle like '%${postData.keyword}%' `;
+      listSql += `and a.artTitle like '%${postData.keyword}%' `;
     }
-    if (postData.status) {
-      listSql += ` and a.art_status = ${postData.status} `;
+    if (postData.status >= 0 && postData.status !== '') {
+      listSql += ` and a.artStatus = ${postData.status} `;
     } else {
-      listSql += 'and a.art_status <> 0 ';
+      listSql += 'and a.artStatus <> 0 ';
     }
     if (postData.categoryId) {
-      countSql += ` and article.cat_id = ${postData.categoryId} `;
-      listSql += ` and a.cat_id = ${postData.categoryId} `;
+      countSql += ` and article.catId = '${postData.categoryId}' `;
+      listSql += ` and a.catId = '${postData.categoryId}' `;
     }
     if (postData.tagId) {
-      countSql += ` and article.tag_ids like '%${postData.tagId}%' `;
-      listSql += ` and a.tag_ids like '%${postData.tagId}%' `;
+      countSql += ` and article.tagIds like '%${postData.tagId}%' `;
+      listSql += ` and article.tagIds like '%${postData.tagId}%' `;
     }
-    listSql += 'order by a.create_time desc ';
+    listSql += 'order by a.createTime desc ';
     listSql += `limit ${(postData.page - 1) * postData.pageSize},${postData.pageSize}; `;
     // console.log(listSql)
     const blogData = await this.app.mysql.query(listSql);
@@ -38,41 +38,41 @@ class BlogService extends Service {
   }
   async getAllCategory(type) {
     type = Number(type);
-    const categoryData = await this.app.mysql.query(`select a.cat_id,a.cat_name,b.counts from category a left join (select cat_id,counts from(select cat_id,count(*) as counts from article group by cat_id)tmp) b on a.cat_id=b.cat_id ${Number(type) ? `where a.cat_type=${type}` : ''} order by counts DESC; `);
+    const categoryData = await this.app.mysql.query(`select a.id,a.catName,b.counts from category a left join (select catId,counts from(select catId,count(*) as counts from article group by catId)tmp) b on a.id=b.catId ${Number(type) ? `where a.catType=${type}` : ''} order by counts DESC; `);
     return categoryData;
   }
   async getAllTag(type) {
-    const tagData = await this.app.mysql.query(`select * from tag ${Number(type) ? `where tag_type=${type}` : ''}`);
+    const tagData = await this.app.mysql.query(`select * from tag ${Number(type) ? `where tagType=${type}` : ''}`);
     return tagData;
   }
   async getArticleDetail(id) {
-    const tagData = await this.app.mysql.query(`select * from article where art_id=${id}`);
+    const tagData = await this.app.mysql.query(`select * from article where id=${id}`);
     return tagData;
   }
   // 新增或修改文章
   async addOrUpdateArt(params, decode) {
-    const { art_title, art_desc, art_cover, art_content, cat_id } = params;
-    if (!params.art_id) {
+    const { artTitle, artDesc, artCover, artContent, catId } = params;
+    if (!params.artId) {
       // 新增
       const result = await this.app.mysql.insert('article', {
-        art_title,
-        art_desc,
-        art_cover,
-        art_content,
-        cat_id,
-        tag_ids: '[1,2]',
-        author_id: decode.user_id,
+        artTitle,
+        artDesc,
+        artCover,
+        artContent,
+        catId,
+        tagIds: '[1,2]',
+        authorId: decode.userId,
       });
       console.log(result);
       return result.affectedRows === 1;
     }
     // 更新
-    const result = await this.app.mysql.query(`update article set art_title='${art_title}', art_desc='${art_desc}', art_cover='${art_cover}', art_content='${art_content}', cat_id=${cat_id},tag_ids='[1,2]',author_id=${decode.user_id} where art_id=${params.art_id}`);
+    const result = await this.app.mysql.query(`update article set artTitle='${artTitle}', artDesc='${artDesc}', artCover='${artCover}', artContent='${artContent}', catId=${catId},tagIds='[1,2]',authorid=${decode.userId} where id=${params.artId}`);
     return result.affectedRows === 1;
   }
   // 更改文章或分类状态
   async changeType(params, dataName, statusName, idName) {
-    const result = await this.app.mysql.query(`update ${dataName} set ${statusName}=${params.status} where ${idName}=${idName === 'art_id' ? params.art_id : params.cat_id}`);
+    const result = await this.app.mysql.query(`update ${dataName} set ${statusName}=${params.status} where id=${idName === 'artId' ? params.artId : params.catId}`);
     return result.affectedRows === 1;
   }
   // async add(params) {
