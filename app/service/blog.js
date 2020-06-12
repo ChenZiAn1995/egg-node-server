@@ -63,7 +63,6 @@ class BlogService extends Service {
         tagIds: '[1,2]',
         authorId: decode.userId,
       });
-      console.log(result);
       return result.affectedRows === 1;
     }
     // 更新
@@ -73,6 +72,18 @@ class BlogService extends Service {
   // 更改文章或分类状态
   async changeType(params, dataName, statusName, idName) {
     const result = await this.app.mysql.query(`update ${dataName} set ${statusName}=${params.status} where id=${idName === 'artId' ? params.artId : params.catId}`);
+    return result.affectedRows === 1;
+  }
+
+  // 新增/删除分类
+  async setCategory(params) {
+    const result = await this.app.mysql.query(``);
+    return result.affectedRows === 1;
+  }
+
+  // 新增/删除标签
+  async setTag(params) {
+    const result = await this.app.mysql.query(``);
     return result.affectedRows === 1;
   }
   // async add(params) {

@@ -7,17 +7,17 @@ class UtilsService extends Service {
     const res = [];
     // 找出所有根结点
     for (const item of data) {
-      if (!item.parent_id) {
-        item.children = getNode(item.permission_id);
+      if (!item.parentId) {
+        item.children = getNode(item.permissionId);
         res.push(item);
       }
     }
     // 传入根结点id 递归查找所有子节点
-    function getNode(permission_id) {
+    function getNode(permissionId) {
       const node = [];
       for (const item of data) {
-        if (item.parent_id === permission_id) {
-          item.children = getNode(item.permission_id);
+        if (item.parentId === permissionId) {
+          item.children = getNode(item.permissionId);
           node.push(item);
         }
       }
@@ -27,8 +27,8 @@ class UtilsService extends Service {
     return res;
   }
   // 获取权限列表
-  async getRole(role_id) {
-    const permissions = await this.app.mysql.query(`select * from role_permission left join permission on role_permission.permission_id = permission.permission_id where role_id=${role_id}`);
+  async getRole(roleId) {
+    const permissions = await this.app.mysql.query(`select * from role_permission left join permission on role_permission.permissionId = permission.id where roleId=${roleId}`);
     const data = this.buildTree(permissions);
     return data;
   }
@@ -44,7 +44,7 @@ class UtilsService extends Service {
     };
     const putPolicy = new qiniu.rs.PutPolicy(options);
     const uploadToken = putPolicy.uploadToken(mac);
-    return uploadToken
+    return uploadToken;
   }
 }
 

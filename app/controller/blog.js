@@ -33,12 +33,23 @@ class BlogController extends Controller {
   }
   // 修改文章状态
   async changeArtStatus() {
-    const result = await this.service.blog.changeType(this.ctx.params, 'article', 'art_status', 'art_id');
+    const result = await this.service.blog.changeType(this.ctx.params, 'article', 'artStatus', 'artId');
     this.ctx.body = result ? new SuccessModel() : new ErrorModel();
   }
   // 修改分类状态
   async changeCatStatus() {
-    const result = await this.service.blog.changeType(this.ctx.params, 'category', 'cat_status', 'cat_id');
+    const result = await this.service.blog.changeType(this.ctx.params, 'category', 'catStatus', 'catId');
+    this.ctx.body = result ? new SuccessModel() : new ErrorModel();
+  }
+
+  // 新增/ 删除分类或标签
+  async addOrUpdateCategoryAndTag () {
+    let type = this.ctx.params.type
+    if (type === 'tag') {
+      const result =await this.service.blog.setCategory(this.ctx.params);
+    }else if (type === 'cat') {
+      const result =await this.service.blog.setTag(this.ctx.params);
+    }
     this.ctx.body = result ? new SuccessModel() : new ErrorModel();
   }
   // async updateArticleType() {

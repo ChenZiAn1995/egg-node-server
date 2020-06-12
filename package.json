@@ -11,7 +11,7 @@
     "egg-cors": "^2.2.3",
     "egg-jwt": "^3.1.7",
     "egg-mysql": "^3.0.0",
-    "egg-scripts": "^2.11.0",
+    "egg-scripts": "^2.13.0",
     "qiniu": "^7.3.1"
   },
   "devDependencies": {
@@ -27,8 +27,8 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-egg-node-server",
-    "stop": "egg-scripts stop --title=egg-server-egg-node-server",
+    "start": "egg-scripts start --port=9700 --daemon --title=egg-server-egg-node-server",
+    "stop": "egg-scripts stop  --title=egg-server-egg-node-server",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",

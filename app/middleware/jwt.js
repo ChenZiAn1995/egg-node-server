@@ -9,6 +9,8 @@ module.exports = options => {
     try {
       // 解码token
       ctx.decode = ctx.app.jwt.verify(token, options.secret);
+      // TODO 引入redis 存储缓存  判断单点登录
+      console.log(ctx.decode);
       await next();
     } catch (error) {
       console.log('error:',error);

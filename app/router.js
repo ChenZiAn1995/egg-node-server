@@ -12,6 +12,8 @@ module.exports = app => {
   router.post('/blog/addOrUpdateArt', jwt, controller.blog.addOrUpdateArt); // 根据是否有art_id 判断新增或更新
   router.post('/blog/changeArtStatus', jwt, controller.blog.changeArtStatus); // 根据status 修改文章状态
   router.post('/blog/changeCatStatus', jwt, controller.blog.changeCatStatus); // 根据status 修改分类状态
+  router.post('/blog/setCatOrTag', jwt, controller.blog.addOrUpdateCategoryAndTag); // 根据status新增or更新 根据type确立分类or标签
+
 
   router.post('/user/login', controller.user.login);// 登录接口
   router.post('/user/changePassword', jwt, controller.user.changePassword); // 修改密码接口
