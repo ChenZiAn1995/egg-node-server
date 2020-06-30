@@ -3,7 +3,7 @@ const Service = require('egg').Service;
 class UsersService extends Service {
   // 登录
   async login(params) {
-    const validate = await this.app.mysql.query(`select user.id,user.userName,user.userPhone,user.roleId,roleName from user  left join role on user.roleId = role.id where userPhone=${params.phone} and userPassword=${params.password}`);
+    const validate = await this.app.mysql.query(`select user.id,user.userName,user.phone,user.roleId,roleName from user  left join role on user.roleId = role.id where phone=${params.phone} and password=${params.password}`);
     if (validate.length) {
     // Todo  增加角色权限
     }
@@ -23,7 +23,7 @@ class UsersService extends Service {
   }
   // 根据token获取用户角色信息
   async getUserInfo(userId) {
-    const data = await this.app.mysql.query(`select user.id,user.userName,user.userPhone,user.roleId,roleName from user  left join role on user.roleId = role.id where user.id=${userId}`);
+    const data = await this.app.mysql.query(`select user.id,user.userName,user.phone,user.roleId,roleName from user  left join role on user.roleId = role.id where user.id=${userId}`);
     return data[0];
   }
 

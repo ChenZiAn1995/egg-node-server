@@ -2,11 +2,13 @@ const { SuccessModel, ErrorModel } = require('../model/resModel');
 
 const Controller = require('egg').Controller;
 class BlogController extends Controller {
+  // 根据条件查询文章
   async selective() {
     const param = this.ctx.params;
-    const data = await this.service.blog.getAllArticle(param);
+    const data = await this.service.blog.getArticleList(param);
     this.ctx.body = new SuccessModel(data);
   }
+  // 获取所有分类
   async getAllClassify() {
     const param = this.ctx.params;
     let data;
@@ -21,10 +23,11 @@ class BlogController extends Controller {
     }
     this.ctx.body = new SuccessModel(data);
   }
+  // 获取文章详情
   async getArticleDetail() {
     const id = this.ctx.params.artId;
     const data = await this.service.blog.getArticleDetail(id);
-    this.ctx.body = data.length ? new SuccessModel(data) : new ErrorModel(data, '未找到该文章');
+    this.ctx.body = data.length ? new SuccessModel(data[0]) : new ErrorModel(data, '未找到该文章');
   }
   // 新增或更新文章
   async addOrUpdateArt() {

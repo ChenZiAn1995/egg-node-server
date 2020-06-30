@@ -2,6 +2,11 @@
 
 /** @type Egg.EggPlugin */
 module.exports = {
+  // 暂时不引入,后期学习重构时加入. 体系较为庞杂
+  // sequelize: {
+  //   enable: true,
+  //   package: 'egg-sequelize',
+  // },
   mysql: {
     enable: true,
     package: 'egg-mysql',

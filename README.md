@@ -31,3 +31,16 @@ $ npm stop
 
 
 [egg]: https://eggjs.org
+
+
+
+
+
+## 错误
+
+1251: mysql8以后修改了加密方式 因此需要到mysql修改回默认的密码加密模式
+
+```mysql
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';
+```
+

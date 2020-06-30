@@ -2,9 +2,10 @@
 const Service = require('egg').Service;
 class BlogService extends Service {
   // implement
-  async getAllArticle(postData) {
+  // 获取所有文章
+  async getArticleList(postData) {
     let countSql = `select count(*) as total from article where artStatus ${postData.status >= 0 && postData.status !== '' ? `= ${postData.status}` : '<> 0'} `;
-    let listSql = 'select a.id as artId,a.artTitle,a.artDesc,a.artCover,a.artContent,a.catId,a.tagIds,a.createTime,a.updateTime,a.artStatus,a.authorId,a.artVisited,a.artComment,a.artLikes,c.catName,c.catStatus  from article as a LEFT JOIN category as c ON c.id = a.catId  where  1=1 ';
+    let listSql = 'select a.id,a.artTitle,a.artDesc,a.artCover,a.artContent,a.catId,a.tagIds,a.createTime,a.updateTime,a.artStatus,a.authorId,a.artVisited,a.artComment,a.artLikes,c.catName,c.status as catStatus  from article as a LEFT JOIN category as c ON c.id = a.catId  where  1=1 ';
     if (postData.artId) {
       countSql += `and article.id=${escape(postData.artId)} `;
       listSql += `and a.id=${escape(postData.artId)} `;
@@ -18,9 +19,9 @@ class BlogService extends Service {
     } else {
       listSql += 'and a.artStatus <> 0 ';
     }
-    if (postData.categoryId) {
-      countSql += ` and article.catId = '${postData.categoryId}' `;
-      listSql += ` and a.catId = '${postData.categoryId}' `;
+    if (postData.catId) {
+      countSql += ` and article.catId = '${postData.catId}' `;
+      listSql += ` and a.catId = '${postData.catId}' `;
     }
     if (postData.tagId) {
       countSql += ` and article.tagIds like '%${postData.tagId}%' `;
