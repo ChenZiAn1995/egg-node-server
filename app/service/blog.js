@@ -47,7 +47,7 @@ class BlogService extends Service {
     return tagData;
   }
   async getArticleDetail(id) {
-    const tagData = await this.app.mysql.query(`select * from article where id=${id}`);
+    const tagData = await this.app.mysql.query(`select a.id,a.artTitle,a.artDesc,a.artCover,a.artContent,a.catId,a.tagIds,a.createTime,a.updateTime,a.artStatus,a.authorId,a.artVisited,a.artComment,a.artLikes,c.catName,c.status as catStatus  from article as a LEFT JOIN category as c ON c.id = a.catId where a.id=${id}`);
     return tagData;
   }
   // 新增或修改文章
